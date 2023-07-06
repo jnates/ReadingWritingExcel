@@ -52,7 +52,7 @@ def ejecutar_backend(numero, ruta_excel):
 
 # Crear la ventana de la interfaz
 ventana = tk.Tk()
-ventana.title("Interfaz para abrir archivo de Excel")
+ventana.title("ReadWriteFile")
 ventana.geometry("400x300")  # Establecer dimensiones de la ventana
 
 # Obtener las dimensiones de la pantalla
@@ -66,33 +66,70 @@ y = (screen_height - 300) // 2  # Ajustar el alto de la ventana si es necesario
 # Establecer la geometría de la ventana
 ventana.geometry(f"400x300+{x}+{y}")
 
-# Crear una etiqueta y un campo de entrada para el número
-etiqueta_numero = tk.Label(ventana, text="Ingrese el número:")
-etiqueta_numero.config(width=20)  # Ajustar el ancho de la etiqueta
-etiqueta_numero.pack(anchor="center", pady=(40, 2))  # Agregar un padding vertical de 10 en la parte superior y 2 en la parte inferior
+# Configurar estilos
+ventana.configure(bg="#f2f2f2")  # Cambiar el color de fondo de la ventana
 
-entrada_numero = tk.Entry(ventana)
-entrada_numero.config(width=20)  # Ajustar el ancho del campo de entrada
-entrada_numero.pack(anchor="center", pady=2)  # Agregar un padding vertical de 2 en la parte superior
+# Estilo de fuente
+estilo_fuente = ("Arial", 12, "bold")
+
+# Configurar estilo para etiquetas
+estilo_etiqueta = {
+    "bg": "#f2f2f2",
+    "fg": "#333333",
+    "font": estilo_fuente,
+    "pady": 10,
+    "bd": 0,  # Grosor del borde
+    "highlightthickness": 0  # Grosor del resaltado del borde
+}
+
+
+# Crear una etiqueta y un campo de entrada para el número
+etiqueta_numero = tk.Label(ventana, text="Ingrese el número:", **estilo_etiqueta)
+etiqueta_numero.pack()
+
+entrada_numero = tk.Entry(ventana, font=estilo_fuente)
+entrada_numero.pack(pady=(0, 10))
+
+# Configurar estilo para botones
+estilo_boton = {
+    "bg": "#4caf50",
+    "fg": "white",
+    "font": estilo_fuente,
+    "width": 20,
+    "pady": 8,
+    "bd": 0,  # Grosor del borde
+    "highlightthickness": 0,  # Grosor del resaltado del borde
+    "activebackground": "#57c24f",  # Color de fondo al hacer clic
+    "highlightcolor": "#57c24f"  # Color del resaltado al hacer clic
+}
 
 # Crear un botón para abrir el archivo de Excel
-boton_abrir = tk.Button(ventana, text="Abrir Excel", command=abrir_excel)
-boton_abrir.config(width=20)  # Ajustar el ancho del botón
-boton_abrir.pack(pady=(10, 2))  # Agregar un padding vertical de 10 en la parte superior y 2 en la parte inferior
+boton_abrir = tk.Button(ventana, text="Abrir Excel", command=abrir_excel, **estilo_boton)
+boton_abrir.pack(pady=(0, 10))
 
 # Crear un botón para enviar el número
-boton_enviar = tk.Button(ventana, text="Enviar Número", command=enviar_numero)
-boton_enviar.config(width=20)  # Ajustar el ancho del botón
-boton_enviar.pack(pady=2)  # Agregar un padding vertical de 2 en la parte superior
+boton_enviar = tk.Button(ventana, text="Enviar Número", command=enviar_numero, **estilo_boton)
+boton_enviar.pack(pady=(0, 10))
 
 # Crear un botón para salir
-boton_salir = tk.Button(ventana, text="Salir", command=salir)
-boton_salir.pack(pady=(20,12))  # Agregar un padding vertical de 5 en la parte superior
+estilo_boton_salir = dict(estilo_boton)
+estilo_boton_salir["bg"] = "#f44336"  # Cambiar el color de fondo del botón de salir
+
+boton_salir = tk.Button(ventana, text="Salir", command=salir, **estilo_boton_salir)
+boton_salir.pack(pady=(20, 10))
+
+# Configurar estilo para la etiqueta de resultado
+estilo_resultado = {
+    "bg": "#f2f2f2",
+    "fg": "#333333",
+    "font": estilo_fuente,
+    "pady": 10,
+    "wraplength": 380  # Ancho máximo antes de envolver el texto
+}
 
 # Crear una etiqueta para mostrar el resultado
-resultado_label = tk.Label(ventana, text="")
-resultado_label.config(width=50)  # Ajustar el ancho de la etiqueta
-resultado_label.pack(anchor="center", pady=(5, 10))  # Agregar un padding vertical de 5 en la parte superior y 10 en la parte inferior
+resultado_label = tk.Label(ventana, text="", **estilo_resultado)
+resultado_label.pack()
 
 # Variable global para almacenar la ruta del archivo de Excel
 ruta_excel_global = r"G:\ReadWriteFile\ReadWriteFile\template\FORMATO-COVID.xlsx"
