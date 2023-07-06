@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"read/constants"
 	"strconv"
 
@@ -10,8 +11,19 @@ import (
 )
 
 func main() {
-	archivoPrincipal := "G:\\ReadWriteFile\\ReadWriteFile\\template\\FORMATO-COVID.xlsx"
-	f, err := excelize.OpenFile(archivoPrincipal) 	// Abrir el archivo principal
+	if len(os.Args) < 3 {
+		fmt.Println("Debe proporcionar el número y la ruta del archivo como argumentos.")
+		return
+	}
+
+	numero, err := strconv.Atoi(os.Args[1])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	rutaExcel := os.Args[2]
+
+	f, err := excelize.OpenFile(rutaExcel) // Abrir el archivo principal
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -19,19 +31,12 @@ func main() {
 	hojaTriage := constants.Triage
 	hojaOdontologia := constants.RegOdontologia
 
-	// Solicitar el ID por consola
-	fmt.Print("Ingrese el ID a buscar: ")
-	var id string
-	if _, err = fmt.Scanln(&id); err != nil {
-		log.Fatal(err)
-	}
-
 	// Buscar el ID en la columna I de TRIAGE
 	hojaTriageData, _ := f.GetRows(hojaTriage)
 	filaEncontrada := -1
 
 	for i, fila := range hojaTriageData {
-		if len(fila) >= 9 && fila[8] == id {
+		if len(fila) >= 9 && fila[8] == strconv.Itoa(numero) {
 			filaEncontrada = i
 			break
 		}
@@ -56,7 +61,7 @@ func main() {
 	copiarFilaCompleta(f, hojaOdontologia, filaTriage, filaNueva)
 
 	// Guardar los cambios en el archivo
-	if err = f.SaveAs(archivoPrincipal); err != nil {
+	if err = f.Save(); err != nil {
 		log.Fatal(err)
 	}
 
